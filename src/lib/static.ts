@@ -229,3 +229,9 @@ export const particlesOptions: ISourceOptions = {
   },
   detectRetina: true,
 };
+
+export const CONSTANTS = {
+  ENDPOINTS: {
+    USERS: "/users",
+  },
+};

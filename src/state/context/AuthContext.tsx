@@ -3,8 +3,6 @@ import { createContext, useState, useContext } from "react";
 
 const AuthContext = createContext({
   isAuthenticated: false,
-  login: () => {},
-  logout: () => {},
 });
 
 export const AuthProvider = ({ children }: ICommon) => {
@@ -24,7 +22,7 @@ export const AuthProvider = ({ children }: ICommon) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated }}>
       {children}
     </AuthContext.Provider>
   );

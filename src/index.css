@@ -10,6 +10,14 @@ body,
   color: white;
 }
 
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #000;
+}
+
 /* @layer base {
   :root {
     --background: 0 0% 100%;

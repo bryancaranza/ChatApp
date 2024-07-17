@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
+import useAuthHooks from "@/hooks/useAuthHooks";
 import { ROUTES } from "@/routes/routes";
-import { useAuth } from "@/state/context/AuthContext";
 import { Link } from "react-router-dom";
 
 const Dashboard = () => {
-  const { logout } = useAuth();
+  const { logout } = useAuthHooks();
   return (
     <div className="flex flex-col justify-center items-center gap-2 h-full">
       <p>Dashboard</p>

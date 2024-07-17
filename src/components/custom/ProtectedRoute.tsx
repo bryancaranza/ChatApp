@@ -1,9 +1,9 @@
 import { Navigate } from "react-router-dom";
-import { useAuth } from "@/state/context/AuthContext";
 import { IProtectedRoute } from "@/interface/IAuth";
+import { useAuthStore } from "@/state/zustand/authStore";
 
 const ProtectedRoute = ({ component: Component }: IProtectedRoute) => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuthStore();
 
   return isAuthenticated ? <Component /> : <Navigate to="/login" />;
 };

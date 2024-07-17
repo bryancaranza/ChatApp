@@ -6,6 +6,7 @@ import { type Container, type ISourceOptions } from "@tsparticles/engine";
 // import { loadFull } from "tsparticles"; // if you are going to use `loadFull`, install the "tsparticles" package too.
 import { loadSlim } from "@tsparticles/slim"; // if you are going to use `loadSlim`, install the "@tsparticles/slim" package too.
 import { particlesOptions } from "@/lib/static";
+import { Toaster } from "@/components/ui/toaster";
 // import { loadBasic } from "@tsparticles/basic"; // if you are going to use `loadBasic`, install the "@tsparticles/basic" package too.
 
 const MainLayout = ({ children }: ICommon) => {
@@ -45,6 +46,7 @@ const MainLayout = ({ children }: ICommon) => {
       <div className="relative !z-10 h-full flex justify-center items-center">
         {children}
       </div>
+      <Toaster />
     </div>
   );
 };
