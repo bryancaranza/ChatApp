@@ -233,5 +233,7 @@ export const particlesOptions: ISourceOptions = {
 export const CONSTANTS = {
   ENDPOINTS: {
     USERS: "/users",
+    CHATROOMS: "/chatrooms",
+    MESSAGES: "/messages",
   },
 };

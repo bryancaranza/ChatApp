@@ -7,13 +7,18 @@ import { ref, set, push } from "firebase/database";
 import { useState } from "react";
 import useUserHooks from "./useUserHooks";
 import { useAuthStore } from "@/state/zustand/authStore";
+import moment from "moment";
 
 const useAuthHooks = () => {
   const [isLoading, setIsLoading] = useState(false); // loading state
-  const { setIsAuthenticated } = useAuthStore();
+  const {
+    setIsAuthenticated,
+    login: loginStore,
+    logout: logoutStore,
+  } = useAuthStore();
   const { getUsers } = useUserHooks();
 
-  const dateToday = new Date();
+  const today = moment().format();
 
   const register = async (
     data: IRegister,
@@ -30,7 +35,7 @@ const useAuthHooks = () => {
       const payload = {
         ...data,
         id,
-        date_created: dateToday,
+        date_created: today,
       };
 
       await set(newDocRef, payload);
@@ -55,32 +60,26 @@ const useAuthHooks = () => {
     }
   };
 
-  const login = async (data: ILogin) => {
-    console.log(data);
-
-    await getUsers((response: IUser[]) => {
+  const login = (data: ILogin) => {
+    getUsers((response: IUser[]) => {
       const matched: IUser = response.filter(
         (user) =>
           user.username === data.username && user.password === data.password
       )?.[0];
-      console.log(response);
 
       if (!matched) {
-        setIsAuthenticated(false);
-        localStorage.removeItem("isAuthenticated");
-        localStorage.removeItem("user");
+        logoutStore();
         toast({
           variant: "destructive",
           title: "Login failed",
           description: "Please check your username/password.",
         });
       } else {
-        const user = JSON.stringify(matched);
-        setIsAuthenticated(true);
-        localStorage.setItem("isAuthenticated", "true");
-        localStorage.setItem("user", user);
+        const { password, ...rest } = matched;
+
+        loginStore(rest);
       }
-    });
+    }, true);
   };
 
   const logout = () => {

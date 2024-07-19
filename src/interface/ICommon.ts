@@ -1,4 +1,4 @@
 export interface ICommon {
   className?: string;
-  children?: React.ReactNode;
+  children?: React.ReactNode | any;
 }

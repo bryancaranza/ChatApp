@@ -1,18 +1,21 @@
-import { toast } from "@/components/ui/use-toast";
 import { IUser } from "@/interface/IUser";
 import { db } from "@/lib/firebase";
 import { CONSTANTS } from "@/lib/static";
-import { ref, set, push, onValue, query } from "firebase/database";
+import { useUserStore } from "@/state/zustand/userStrore";
+import { ref, onValue, query } from "firebase/database";
 import { useState } from "react";
 
 const useUserHooks = () => {
   const [isLoading, setIsLoading] = useState(false); // loading state
-  const dateToday = new Date();
+  const { setSearchUserList, usersList } = useUserStore();
+  const ls = localStorage.getItem("user");
 
-  const getUsers = (callback: (response: IUser[]) => void) => {
+  const getUsers = (
+    callback: (response: IUser[]) => void,
+    isAuth?: boolean
+  ) => {
     const dbRef = ref(db, CONSTANTS.ENDPOINTS.USERS); // setting database reference
     const dbQuery = query(dbRef);
-    console.log("test");
 
     setIsLoading(true); // initialize loading
 
@@ -21,16 +24,37 @@ const useUserHooks = () => {
         return callback([]);
       }
       const data: IUser[] = Object.values(snapshot.val()); // query result data
-      console.log(snapshot);
+      const filter: IUser[] = data.map((user) => {
+        const { password, ...rest } = user;
 
+        return rest;
+      });
       setIsLoading(false); // done loading
 
       // run success callback
-      if (callback) callback(data);
+      if (callback) callback(isAuth ? data : filter);
     });
   };
 
-  return { getUsers, isLoading };
+  const searchUser = (search: string) => {
+    const user: IUser = JSON.parse(ls!);
+    console.log(user);
+
+    const filter = usersList.filter(
+      (users) =>
+        (users.username.toLowerCase().includes(search.toLowerCase()) ||
+          (users.firstname + " " + users.lastname)
+            .toLowerCase()
+            .includes(search.toLowerCase())) &&
+        users.username !== user.username
+    );
+
+    console.log({ filter, usersList });
+
+    setSearchUserList(!search.length ? [] : filter);
+  };
+
+  return { getUsers, searchUser, isLoading };
 };
 
 export default useUserHooks;

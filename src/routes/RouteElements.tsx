@@ -1,8 +1,10 @@
 import ProtectedRoute from "@/components/custom/ProtectedRoute";
 import { lazy } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { ROUTES } from "./routes";
 import PublicRoute from "@/components/custom/PublicRoute";
+import Search from "@/components/pages/dashboard/Search";
+import Message from "@/components/pages/dashboard/Message";
 
 const Home = lazy(() => {
   return new Promise((resolve: any) => {
@@ -43,7 +45,11 @@ const RouteElements = () => {
       <Route
         path={ROUTES.DASHBOARD}
         element={<ProtectedRoute component={Dashboard} />}
-      />
+      >
+        <Route path={ROUTES.SEARCH} element={<Search />} />
+        <Route path={ROUTES.MESSAGE + "/:id"} element={<Message />} />
+      </Route>
+      <Route path="*" element={<Navigate to={ROUTES.DASHBOARD} />} />
     </Routes>
   );
 };

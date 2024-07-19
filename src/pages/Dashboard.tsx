@@ -1,24 +1,27 @@
-import { Button } from "@/components/ui/button";
-import useAuthHooks from "@/hooks/useAuthHooks";
-import { ROUTES } from "@/routes/routes";
-import { Link } from "react-router-dom";
+import ContainerCard from "@/components/custom/ContainerCard";
+import Landing from "@/components/pages/dashboard/Landing";
+import useUserHooks from "@/hooks/useUserHooks";
+import DashboardLayout from "@/layouts/DashboardLayout";
+import { useUserStore } from "@/state/zustand/userStrore";
+import { useEffect } from "react";
+import { Outlet, useLocation } from "react-router-dom";
 
 const Dashboard = () => {
-  const { logout } = useAuthHooks();
-  return (
-    <div className="flex flex-col justify-center items-center gap-2 h-full">
-      <p>Dashboard</p>
+  const { setUsersList } = useUserStore();
+  const { getUsers } = useUserHooks();
+  const path = useLocation();
+  const landing = path.pathname.split("/").length === 2;
 
-      <Button onClick={logout}>Logout</Button>
-      <div className="flex gap-2">
-        <Button asChild>
-          <Link to={ROUTES.LOGIN}>Go to Login</Link>
-        </Button>
-        <Button asChild>
-          <Link to={ROUTES.ROOT}>Go to Home</Link>
-        </Button>
-      </div>
-    </div>
+  useEffect(() => {
+    getUsers((response) => setUsersList(response));
+  }, []);
+
+  return (
+    <DashboardLayout>
+      <ContainerCard className="w-full h-full rounded-none rounded-tl-3xl  xl:min-w-[500px]">
+        {landing ? <Landing /> : <Outlet />}
+      </ContainerCard>
+    </DashboardLayout>
   );
 };
 

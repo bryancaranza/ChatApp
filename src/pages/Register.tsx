@@ -1,11 +1,9 @@
 import ContainerCard from "@/components/custom/ContainerCard";
 import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/routes/routes";
-import { useAuth } from "@/state/context/AuthContext";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
-import { firebaseConfig } from "@/lib/firebase";
 import { IRegister } from "@/interface/IAuth";
 import useAuthHooks from "@/hooks/useAuthHooks";
 import { toast } from "@/components/ui/use-toast";
@@ -62,7 +60,9 @@ const Register = () => {
               className={`${errors.password ? "border-red-600 border-2" : ""}`}
               {...register("password", { required: true })}
             />
-            <Button type="submit">Register</Button>
+            <Button type="submit" disabled={isLoading}>
+              Register
+            </Button>
           </div>
         </form>
         <div className="flex gap-1 items-center text-gray-400 text-sm">

@@ -1,5 +1,5 @@
 export interface IProtectedRoute {
-  component: React.ComponentType<any>;
+  component: React.ComponentType<any> | React.ReactNode | any;
   [key: string]: any;
 }
 
