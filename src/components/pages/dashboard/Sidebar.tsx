@@ -14,11 +14,12 @@ const Sidebar = () => {
 
   const getMyChats = () => {
     getChatRooms((response) => {
-      const myChats = response.filter((chatroom: any) =>
-        chatroom.users.filter((chatuser: any) => chatuser.id.includes(user?.id))
+      const myChats = response.filter(
+        (chatroom: any) =>
+          chatroom.users.filter((chatuser: any) =>
+            chatuser.id.includes(user?.id)
+          )?.length
       );
-
-      console.log(myChats);
 
       setMyChatrooms(myChats);
     });

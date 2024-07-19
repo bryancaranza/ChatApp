@@ -50,7 +50,7 @@ const Message = () => {
           sub={chatWith?.[0].username}
         />
       </div>
-      <div className="h-full flex flex-col gap-2 py-4 px-2">
+      <div className="h-full flex flex-col gap-2 py-4 px-2 overflow-y-auto">
         {messages?.map((message: any) => {
           return (
             <div className="flex w-full gap-2">

@@ -17,6 +17,41 @@ body,
   height: 100vh;
   background-color: #000;
 }
+/* Hide scrollbar for Chrome, Safari and Opera */
+.scroll-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.scroll-hidden {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #3d3557;
+  border-radius: 5px;
+  border-radius: 10px 10px 10px 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(15 23 42);
+  border-radius: 10px 10px 10px 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb:hover {
+  transition: 1s ease-in;
+  border-radius: 10px 10px 10px 10px;
+}
 
 /* @layer base {
   :root {
