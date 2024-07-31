@@ -24,20 +24,18 @@ const useAuthHooks = () => {
     data: IRegister,
     callback?: {
       onSuccess?: () => void;
-      onError?: () => void;
+      onError?: (key: any, error: any) => void;
     }
   ) => {
     const newDocRef = push(ref(db, CONSTANTS.ENDPOINTS.USERS)); // creating unique id
     const id = `user-${newDocRef.key}`; // unique id
 
-    // comment this later
     try {
       const payload = {
         ...data,
         id,
         date_created: today,
       };
-
       await set(newDocRef, payload);
 
       setIsLoading(false); // done loading
@@ -51,7 +49,7 @@ const useAuthHooks = () => {
       setIsLoading(false); // done loading
 
       // run error callback
-      if (callback?.onError) callback.onError();
+      if (callback?.onError) callback.onError("test", {});
       toast({
         variant: "destructive",
         title: "Something went wrong!",

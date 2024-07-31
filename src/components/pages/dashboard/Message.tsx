@@ -1,6 +1,6 @@
 import useMessageHooks from "@/hooks/useMessageHooks";
 import { ROUTES } from "@/routes/routes";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Header from "./Header";
 import MessageBar from "./MessageBar";
@@ -9,6 +9,7 @@ import { useAuthStore } from "@/state/zustand/authStore";
 import Icon from "@/components/custom/Icon";
 
 const Message = () => {
+  const messageRef = useRef<HTMLDivElement | null>(null);
   const params = useParams();
   const { user } = useAuthStore();
   const { getMessages, getChatRooms } = useMessageHooks();
@@ -21,6 +22,12 @@ const Message = () => {
     (chatuser: any) => chatuser.id !== user?.id
   );
 
+  const scrollToBottom = () => {
+    if (messageRef.current) {
+      messageRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   useEffect(() => {
     getChatRooms((response) => {
       const selectedChat = response.filter(
@@ -32,12 +39,17 @@ const Message = () => {
 
       if (!selectedChat) return navigate(ROUTES.DASHBOARD);
     });
+
     getMessages(params?.id!, (response) => {
       console.log(response);
 
       setMessages(response);
     });
   }, [params]);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   return (
     <div className="flex flex-col gap-4 h-full">
@@ -53,7 +65,7 @@ const Message = () => {
       <div className="h-full flex flex-col gap-2 py-4 px-2 overflow-y-auto">
         {messages?.map((message: any) => {
           return (
-            <div className="flex w-full gap-2">
+            <div key={message.id} className="flex w-full gap-2">
               <div className="flex justify-center p-2">
                 <Icon className="!bg-[#0B101B] !w-10 !h-10">
                   {`${message.sent_by.firstname} ${message.sent_by.lastname}`}
@@ -68,6 +80,7 @@ const Message = () => {
             </div>
           );
         })}
+        <div ref={messageRef} />
       </div>
       <div>
         <MessageBar />
